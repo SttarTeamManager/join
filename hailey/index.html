@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- =====================================================================
+     AMBASSADOR CONFIG — the only things that change per ambassador
+     1. name + onelink in the script right below
+     2. the same name in the 5 preview lines under it (iMessage / IG read
+        these without running JS, so they must be plain text)
+     ===================================================================== -->
+<script>
+  window.STTAR = {
+    name: "hailey",                                        // lowercase first name
+    onelink: "https://sttar-app.onelink.me/vhGk?deep_link_value=profile&deep_link_sub1=2e08c77b-9e48-42ef-86b5-c6d047cbe4b9"        // their AppsFlyer OneLink
+  };
+</script>
+<title>hailey invited you to Sttar</title>
+<meta property="og:title" content="hailey invited you to Sttar">
+<meta property="og:url" content="https://sttar.com/u/hailey/">
+<meta property="og:image" content="https://sttar.com/u/hailey/og.png">
+<meta name="twitter:image" content="https://sttar.com/u/hailey/og.png">
+<!-- ================== END CONFIG — nothing below changes ================== -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="5 pics a day. See your friends. Sttart your first day today.">
+<meta property="og:description" content="5 pics a day. See your friends. Sttart your first day today.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sttar">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F7F1EA">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M18 0s.24 6.8 2.56 11.27C23.9 7.27 27 2.45 27 2.45s-3.05 5.91-4.84 11.1c3.83 3.85 13.84 4.45 13.84 4.45s-9.88.46-13.71 4.29C18.46 26.12 18 36 18 36s-.33-6.77-2.62-11.27C12.07 28.77 9 33.54 9 33.54s3.03-5.85 4.87-11.05C9.86 18.47 0 18 0 18s9.88-.46 13.71-4.29C17.54 9.88 18 0 18 0Z' fill='%23121212'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --cream:#F7F1EA; --ink:#121212; --body:#5D5D5D; --muted:#6D6D6D;
+    --paper:#FFFFFF; --photo-bg:#EDE5DA; --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--cream);overflow:hidden;overscroll-behavior:none}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+
+  .page{
+    height:100vh;height:100dvh;max-width:460px;margin:0 auto;
+    display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;
+    padding:max(18px,env(safe-area-inset-top)) 24px max(22px,env(safe-area-inset-bottom));
+  }
+  .brand{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:9px;font-weight:700;font-size:16px;letter-spacing:-.03em;line-height:1}
+  .brand svg{width:26px;height:26px}
+
+  .stage{position:relative;container-type:size;min-height:0}
+  .pile{
+    --w:min(56cqw,74cqh,230px);
+    position:absolute;left:50%;top:50%;width:var(--w);aspect-ratio:100/112;
+    transform:translate(-50%,-46%);container-type:inline-size;
+    touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;
+  }
+  .pile.grabbing{cursor:grabbing}
+  .polaroid.drag{transition:none}
+  .polaroid{
+    position:absolute;inset:0;background:var(--paper);
+    padding:5.5cqw 5.5cqw 0;display:flex;flex-direction:column;
+    box-shadow:0 1px 2px rgba(67,41,12,.10),0 14px 28px -10px rgba(67,41,12,.28);
+    transition:transform .55s cubic-bezier(.3,1.25,.5,1),opacity .4s var(--ease);
+    will-change:transform,opacity;
+  }
+  .polaroid.out{transition:transform .5s cubic-bezier(.5,0,.75,.4),opacity .45s var(--ease) .05s}
+  .polaroid .ph{width:100%;aspect-ratio:1;background:var(--photo-bg);overflow:hidden}
+  .polaroid img{pointer-events:none;-webkit-user-drag:none;display:block;width:100%;height:100%;object-fit:cover}
+  .polaroid .cap{
+    flex:1;display:flex;align-items:center;justify-content:space-between;gap:6px;
+    font-size:max(8.5px,5.2cqw);line-height:1;white-space:nowrap;
+  }
+  .cap .d{color:var(--muted)}
+  .cap .t{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;line-height:1.3;padding-bottom:.1em}
+
+  .headline{margin:36px 0 0;display:grid;justify-items:center;text-align:center;font-weight:800;color:var(--ink);animation:rise .6s cubic-bezier(.3,1.3,.5,1) .15s both}
+  .name{display:block;font-size:88px;line-height:.9;letter-spacing:-.06em;padding:0 .04em .04em}
+  .rest{display:block;margin-top:18px;font-size:26px;line-height:1.1;letter-spacing:-.04em}
+
+  .foot{position:relative;z-index:30;display:grid;justify-items:center;gap:16px;text-align:center;animation:rise .45s var(--ease) .3s both}
+  .sub{margin:0 0 10px;font-size:16px;line-height:1.4;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+  .btn{
+    display:flex;align-items:center;justify-content:center;height:56px;min-width:236px;padding:0 32px;border-radius:10px;
+    background:var(--ink);color:#fff;text-decoration:none;font-size:17px;font-weight:600;letter-spacing:-.01em;
+    transition:transform .16s var(--ease),background .16s var(--ease);touch-action:manipulation;
+  }
+  .btn:hover{background:#2a2a2a}
+  @media (hover:none){.btn:hover{background:var(--ink)}}
+  .btn:active{transform:scale(.98);background:#000}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(18,18,18,.18)}
+  .trust{margin:0;display:flex;align-items:center;gap:8px;font-size:14px;line-height:1;color:var(--muted)}
+  .stars{display:flex;gap:2px}
+  .stars svg{width:14px;height:14px;fill:var(--ink)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  @media (max-height:700px){
+    .headline{margin-top:24px}
+    .rest{font-size:22px}
+    .foot{gap:12px}
+    .btn{height:52px}
+  }
+  @media (min-width:700px) and (min-height:760px){
+    .page{max-width:560px;padding-top:28px;padding-bottom:36px}
+    .brand{font-size:17px}
+    .headline{margin-top:52px}
+    .pile{--w:min(56cqw,74cqh,250px)}
+    .rest{font-size:32px}
+    .sub{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="brand" aria-label="Sttar: Social Archive">
+    <svg viewBox="0 0 36 36" aria-hidden="true"><path fill="#121212" d="M18 0s.24 6.8 2.56 11.27C23.9 7.27 27 2.45 27 2.45s-3.05 5.91-4.84 11.1c3.83 3.85 13.84 4.45 13.84 4.45s-9.88.46-13.71 4.29C18.46 26.12 18 36 18 36s-.33-6.77-2.62-11.27C12.07 28.77 9 33.54 9 33.54s3.03-5.85 4.87-11.05C9.86 18.47 0 18 0 18s9.88-.46 13.71-4.29C17.54 9.88 18 0 18 0Z"/></svg>
+    <span>Sttar: Social Archive</span>
+  </div>
+
+  <h1 class="headline"><span class="name" id="name" data-name>hailey</span><span class="rest">invited you to <u style="text-decoration-thickness:.08em;text-underline-offset:.12em">Sttar</u>.</span></h1>
+
+  <div class="stage" aria-hidden="true"><div class="pile" id="pile"></div></div>
+
+  <div class="foot">
+    <p class="sub">5 pics a day. See your friends.<br>Sttart your first day today.</p>
+    <a class="btn" id="cta" href="#"><span>join <span data-name>hailey</span> on sttar</span></a>
+    <p class="trust"><span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg></span>4.8 on the App Store</p>
+  </div>
+</main>
+
+<script>
+/* ---------- photos: add / remove files here ---------- */
+const PHOTO_BASE = "https://raw.githubusercontent.com/SttarTeamManager/sttar.com-page-images/refs/heads/main/sttar.com-page-images/";
+// each photo + the caption on its polaroid. add / remove lines freely.
+const PHOTOS = [
+  { file: "photo (1).jpg",  caption: "museum stairs" },
+  { file: "photo (2).jpg",  caption: "dinner ran long" },
+  { file: "photo (3).jpg",  caption: "lazy afternoon" },
+  { file: "photo (4).jpg",  caption: "found a nook" },
+  { file: "photo (5).jpg",  caption: "best lunch ever" },
+  { file: "photo (6).jpg",  caption: "shade break" },
+  { file: "photo (7).jpg",  caption: "crosswalk selfie" },
+  { file: "photo (8).jpg",  caption: "golden hour" },
+  { file: "photo (9).jpg",  caption: "these stairs tho" },
+  { file: "photo (10).jpg", caption: "night out" },
+  { file: "photo (11).jpg", caption: "fit check" },
+  { file: "photo (12).jpg", caption: "swam to the arch" },
+  { file: "photo (13).jpg", caption: "pool with a view" },
+  { file: "photo (14).jpg", caption: "front row-ish" },
+  { file: "photo (15).jpg", caption: "filming it anyway" },
+  { file: "photo (16).jpg", caption: "game night" },
+  { file: "photo (17).jpg", caption: "the sky did that" },
+  { file: "photo (18).jpg", caption: "cliff day" },
+  { file: "photo (19).jpg", caption: "paris, finally" },
+  { file: "photo (20).jpg", caption: "thumbs up" },
+  { file: "photo (21).jpg", caption: "the boys" },
+  // photo (22) left out — greek-life banner
+  { file: "photo (23).jpg", caption: "one more game" },
+  { file: "photo (24).jpg", caption: "boat day" },
+  { file: "photo (25).jpg", caption: "dancing till 2am" }
+];
+const FLIP_EVERY = 1500; // ms between swipes
+const DEPTH = 3;        // cards visible in the stack
+const RESUME_AFTER = 3000; // ms after a manual swipe before auto-swiping resumes
+
+(function () {
+  const { name, onelink } = window.STTAR;
+  document.querySelectorAll("[data-name]").forEach(el => (el.textContent = name));
+  document.getElementById("cta").href = onelink; // OneLink routes iPhone → App Store, Android → Google Play
+
+  /* name fills the column like the sttar.com headline, capped by screen height */
+  const nameEl = document.getElementById("name");
+  const fitName = () => {
+    const col = nameEl.parentElement.clientWidth;
+    nameEl.style.fontSize = "100px";
+    const w = nameEl.scrollWidth;
+    nameEl.style.fontSize = Math.min(100 * col * 0.96 / w, innerHeight * 0.12, 130) + "px";
+  };
+  fitName(); document.fonts && document.fonts.ready.then(fitName); addEventListener("resize", fitName);
+
+  const pile = document.getElementById("pile");
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const shots = shuffle(PHOTOS.map(p => ({ url: PHOTO_BASE + encodeURIComponent(p.file), caption: p.caption })));
+  const MONTHS = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+  let day = 0;
+  const nextDate = () => { const d = new Date(Date.now() - (day++ % 90) * 864e5); return MONTHS[d.getMonth()] + " " + d.getDate(); };
+
+  function polaroid(shot) {
+    const el = document.createElement("div");
+    el.className = "polaroid";
+    el.innerHTML = '<div class="ph"></div><div class="cap"><span class="d"></span><span class="t"></span></div>';
+    if (shot) { const img = new Image(); img.alt = ""; img.src = shot.url; el.firstChild.appendChild(img); }
+    el.querySelector(".d").textContent = nextDate();
+    el.querySelector(".t").textContent = shot ? shot.caption : "";
+    el._r = rand(-8, 8);
+    return el;
+  }
+  const place = (el, i) => {
+    el.style.zIndex = 10 - i;
+    el.style.opacity = i < DEPTH ? 1 : 0;
+    el.style.transform = `translateY(${i * -4.5}%) rotate(${i === 0 ? el._r * .5 : el._r}deg) scale(${1 - i * .045})`;
+  };
+
+  /* reduced motion: static fanned stack, no swiping */
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (let i = 0; i < DEPTH; i++) { const el = polaroid(shots[i]); place(el, i); el.style.transition = "none"; pile.appendChild(el); }
+    return;
+  }
+
+  /* preload 4 at a time; the deck only uses photos that have loaded */
+  const ready = [];
+  const load = s => new Promise(res => {
+    const im = new Image();
+    im.onload = () => Promise.race([im.decode ? im.decode().catch(() => {}) : 0, sleep(200)]).then(() => { ready.push(s); res(); });
+    im.onerror = res;
+    im.src = s.url;
+  });
+  const q = shots.slice();
+  const worker = async () => { while (q.length) await load(q.shift()); };
+  for (let i = 0; i < 4; i++) worker();
+  let cursor = 0;
+  const nextPhoto = () => { if (!ready.length) return null; if (cursor >= ready.length) cursor = 0; return ready[cursor++]; };
+
+  const deck = [];
+  const addCard = (fromBack) => {
+    const el = polaroid(nextPhoto());
+    if (fromBack) { place(el, DEPTH); el.style.transition = "none"; }
+    pile.insertBefore(el, pile.firstChild);
+    deck.push(el);
+    if (fromBack) requestAnimationFrame(() => requestAnimationFrame(() => { el.style.transition = ""; place(el, deck.indexOf(el)); }));
+    else place(el, deck.length - 1);
+  };
+
+  function flip(dir, thrown) {
+    const top = deck.shift();
+    dir = dir || (Math.random() < .5 ? -1 : 1);
+    top.classList.remove("drag");
+    top.style.zIndex = 20;
+    if (thrown) {
+      top.style.transition = "transform .42s cubic-bezier(.2,.7,.3,1), opacity .38s var(--ease) .04s";
+      top.style.transform = `translate(${thrown.x}px, ${thrown.y}px) rotate(${dir * rand(20, 28)}deg)`;
+    } else {
+      top.classList.add("out");
+      top.style.transform = `translate(${dir * 135}%, -8%) rotate(${dir * rand(16, 24)}deg)`;
+    }
+    top.style.opacity = 0;
+    setTimeout(() => top.remove(), 600);
+    deck.forEach(place);
+    addCard(true);
+  }
+
+  (async () => {
+    const t0 = performance.now();
+    while (ready.length < DEPTH && performance.now() - t0 < 2000) await sleep(60); // wait for photos, max 2s
+    for (let i = 0; i < DEPTH; i++) addCard(false);
+    const first = deck[0];
+    first.style.transition = "none";
+    first.style.transform = `translateY(-14%) rotate(${first._r * 2}deg) scale(1.08)`;
+    first.style.opacity = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => { first.style.transition = ""; place(first, 0); }));
+    schedule();
+  })();
+
+  /* auto-swipe loop; pauses while dragging, resumes RESUME_AFTER ms after a manual swipe */
+  let timer, drag = null;
+  function schedule(ms = FLIP_EVERY) {
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (!document.hidden && !drag && deck.length) flip(); schedule(); }, ms);
+  }
+
+  /* drag / flick the top card */
+  pile.addEventListener("pointerdown", e => {
+    const el = deck[0];
+    if (!el || drag) return;
+    clearTimeout(timer);
+    pile.setPointerCapture(e.pointerId);
+    pile.classList.add("grabbing");
+    el.classList.add("drag");
+    drag = { el, id: e.pointerId, x0: e.clientX, y0: e.clientY, dx: 0, dy: 0, lx: e.clientX, ly: e.clientY, lt: e.timeStamp, vx: 0, vy: 0 };
+  });
+  pile.addEventListener("pointermove", e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dt = Math.max(1, e.timeStamp - drag.lt);
+    drag.vx = drag.vx * .3 + (e.clientX - drag.lx) / dt * .7;
+    drag.vy = drag.vy * .3 + (e.clientY - drag.ly) / dt * .7;
+    drag.lx = e.clientX; drag.ly = e.clientY; drag.lt = e.timeStamp;
+    drag.dx = e.clientX - drag.x0; drag.dy = e.clientY - drag.y0;
+    drag.el.style.transform = `translate(${drag.dx}px, ${drag.dy}px) rotate(${drag.el._r * .5 + drag.dx * .07}deg)`;
+  });
+  const release = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const { el, dx, dy } = drag;
+    const stale = e.timeStamp - drag.lt > 80;
+    const vx = stale ? 0 : drag.vx, vy = stale ? 0 : drag.vy;
+    drag = null;
+    pile.classList.remove("grabbing");
+    const w = pile.offsetWidth;
+    const fling = e.type !== "pointercancel" && (Math.abs(dx) > w * .35 || (Math.abs(vx) > .45 && Math.abs(dx) > 12));
+    if (fling) {
+      const dir = Math.sign(Math.abs(vx) > .45 ? vx : dx) || 1;
+      const x = dir * (innerWidth * .6 + w);
+      flip(dir, { x, y: dy + vy * 260 });
+      navigator.vibrate && navigator.vibrate(8);
+    } else {
+      el.classList.remove("drag");
+      place(el, 0);
+    }
+    schedule(RESUME_AFTER);
+  };
+  pile.addEventListener("pointerup", release);
+  pile.addEventListener("pointercancel", release);
+
+  /* iOS Safari can treat a tap as "hover" when the page changes during it (the stack is animating),
+     swallowing the first tap. Freeze the stack on touch and navigate on touchend directly. */
+  const cta = document.getElementById("cta");
+  let t0 = null;
+  cta.addEventListener("touchstart", e => { clearTimeout(timer); const t = e.touches[0]; t0 = { x: t.clientX, y: t.clientY }; }, { passive: true });
+  cta.addEventListener("touchend", e => {
+    const t = e.changedTouches[0];
+    if (t0 && Math.hypot(t.clientX - t0.x, t.clientY - t0.y) < 12) { e.preventDefault(); location.href = onelink; }
+    t0 = null;
+    schedule(RESUME_AFTER);
+  });
+})();
+</script>
+</body>
+</html>
