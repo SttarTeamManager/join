@@ -10,7 +10,7 @@
 <script>
   window.STTAR = {
     name: "gabi",                                        // lowercase first name
-    onelink: "https://sttar-app.onelink.me/vhGk?deep_link_value=profile&deep_link_sub1=84a4bb4c-ee1f-47b1-9788-b8da05a1fc9e&deep_link_sub2=81s2gm3m"        // their AppsFlyer OneLink
+    onelink: "https://sttar-app.onelink.me/vhGk?deep_link_value=profile&deep_link_sub1=84a4bb4c-ee1f-47b1-9788-b8da05a1fc9e&pid=sttar.com-join&c=gabivayl"        // their AppsFlyer OneLink
   };
 </script>
 <title>gabi invited you to Sttar</title>
@@ -82,7 +82,7 @@
   .name{display:block;font-size:88px;line-height:.9;letter-spacing:-.06em;padding:0 .04em .04em}
   .rest{display:block;margin-top:18px;font-size:26px;line-height:1.1;letter-spacing:-.04em}
 
-  .foot{display:grid;justify-items:center;gap:16px;text-align:center;animation:rise .45s var(--ease) .3s both}
+  .foot{position:relative;z-index:30;display:grid;justify-items:center;gap:16px;text-align:center;animation:rise .45s var(--ease) .3s both}
   .sub{margin:0 0 10px;font-size:16px;line-height:1.4;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
   .btn{
     display:flex;align-items:center;justify-content:center;height:56px;min-width:236px;padding:0 32px;border-radius:10px;
@@ -90,6 +90,7 @@
     transition:transform .16s var(--ease),background .16s var(--ease);touch-action:manipulation;
   }
   .btn:hover{background:#2a2a2a}
+  @media (hover:none){.btn:hover{background:var(--ink)}}
   .btn:active{transform:scale(.98);background:#000}
   .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(18,18,18,.18)}
   .trust{margin:0;display:flex;align-items:center;gap:8px;font-size:14px;line-height:1;color:var(--muted)}
@@ -314,6 +315,18 @@ const RESUME_AFTER = 3000; // ms after a manual swipe before auto-swiping resume
   };
   pile.addEventListener("pointerup", release);
   pile.addEventListener("pointercancel", release);
+
+  /* iOS Safari can treat a tap as "hover" when the page changes during it (the stack is animating),
+     swallowing the first tap. Freeze the stack on touch and navigate on touchend directly. */
+  const cta = document.getElementById("cta");
+  let t0 = null;
+  cta.addEventListener("touchstart", e => { clearTimeout(timer); const t = e.touches[0]; t0 = { x: t.clientX, y: t.clientY }; }, { passive: true });
+  cta.addEventListener("touchend", e => {
+    const t = e.changedTouches[0];
+    if (t0 && Math.hypot(t.clientX - t0.x, t.clientY - t0.y) < 12) { e.preventDefault(); location.href = onelink; }
+    t0 = null;
+    schedule(RESUME_AFTER);
+  });
 })();
 </script>
 </body>
