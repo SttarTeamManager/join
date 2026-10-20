@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile not found · Sttar</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://sttar.com/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="https://sttar.com/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F7F1EA; --ink:#121212; --muted:#6B6460; --pink:#FA3AA1; --line:#E4DACF; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--cream); color:var(--ink); font-family:'Inter',system-ui,sans-serif;
+         display:flex; flex-direction:column; min-height:100vh; -webkit-font-smoothing:antialiased; }
+  header { padding:24px; }
+  header a { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-weight:700; font-size:20px; letter-spacing:-0.02em; }
+  header svg { width:26px; height:26px; }
+  main { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px 20px 64px; }
+
+  .stamp { width:240px; height:240px; margin-bottom:36px; color:var(--pink);
+           animation:land .7s cubic-bezier(.2,1.6,.4,1) both; }
+  .stamp svg { width:100%; height:100%; overflow:visible; }
+  .stamp text { font-family:'Inter',system-ui,sans-serif; fill:currentColor; }
+  .stamp .arc { font-size:15px; font-weight:800; letter-spacing:.24em; }
+  .stamp .code { font-size:54px; font-weight:800; letter-spacing:-0.03em; }
+  .stamp .date { font-size:12px; font-weight:700; letter-spacing:.2em; }
+
+  h1 { font-size:clamp(30px, 6vw, 44px); font-weight:800; letter-spacing:-0.03em; line-height:1.08; margin:0 0 14px; }
+  p { font-size:17px; line-height:1.55; color:var(--muted); margin:0 auto 32px; max-width:420px; }
+  .actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; height:48px; padding:0 24px; border-radius:999px;
+         font-size:16px; font-weight:600; text-decoration:none; transition:transform .15s ease, background .15s ease; }
+  .btn:hover { transform:translateY(-1px); }
+  .btn.primary { background:var(--ink); color:#fff; }
+  .btn.secondary { background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+  .btn.secondary:hover { border-color:var(--ink); }
+
+  footer { padding:24px; text-align:center; font-size:13px; color:var(--muted); }
+  footer a { color:inherit; }
+
+  @keyframes land { 0% { opacity:0; transform:rotate(-12deg) scale(1.7); } 100% { opacity:1; transform:rotate(-12deg) scale(1); } }
+  .stamp { transform:rotate(-12deg); }
+  @media (prefers-reduced-motion: reduce) { .stamp { animation:none; } }
+</style>
+</head>
+<body>
+  <header>
+    <a href="https://sttar.com/" aria-label="Sttar home">
+      <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 0C18 0 18.244 6.801 20.561 11.274C23.892 7.273 26.997 2.454 26.997 2.454C26.997 2.454 23.944 8.361 22.154 13.544C22.165 13.555 22.176 13.566 22.187 13.577C26.016 17.4 36 18 36 18C36 18 26.117 18.459 22.287 22.289C18.457 26.119 18 36 18 36C18 36 17.669 29.232 15.381 24.731C12.068 28.768 9.003 33.535 9.003 33.535C9.003 33.535 12.03 27.694 13.874 22.494C13.813 22.428 13.751 22.363 13.688 22.3C9.858 18.47 0 18 0 18C0 18 9.883 17.541 13.713 13.711C17.543 9.881 18 0 18 0Z" fill="currentColor"/></svg>
+      Sttar
+    </a>
+  </header>
+
+  <main>
+    <div class="stamp" aria-hidden="true">
+      <svg viewBox="0 0 240 240">
+        <defs>
+          <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="7" result="noise"/>
+            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.75" result="speckle"/>
+            <feComposite in="SourceGraphic" in2="speckle" operator="in" result="speckled"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3" result="warp"/>
+            <feDisplacementMap in="speckled" in2="warp" scale="2.5"/>
+          </filter>
+          <path id="top" d="M 38 120 A 82 82 0 0 1 202 120"/>
+          <path id="bottom" d="M 30 120 A 90 90 0 0 0 210 120"/>
+        </defs>
+        <g filter="url(#ink)" fill="none" stroke="currentColor">
+          <circle cx="120" cy="120" r="114" stroke-width="4"/>
+          <circle cx="120" cy="120" r="106" stroke-width="1.5"/>
+          <circle cx="24" cy="120" r="3.5" fill="currentColor" stroke="none"/>
+          <circle cx="216" cy="120" r="3.5" fill="currentColor" stroke="none"/>
+          <text class="arc" stroke="none"><textPath href="#top" startOffset="50%" text-anchor="middle">PROFILE NOT FOUND</textPath></text>
+          <text class="arc" stroke="none"><textPath href="#bottom" startOffset="50%" text-anchor="middle" dominant-baseline="hanging">MIDDLE OF NOWHERE</textPath></text>
+          <line x1="62" y1="92" x2="178" y2="92" stroke-width="2"/>
+          <text class="code" x="120" y="139" text-anchor="middle" stroke="none">404</text>
+          <line x1="62" y1="146" x2="178" y2="146" stroke-width="2"/>
+          <text class="date" id="stamp-date" x="120" y="166" text-anchor="middle" stroke="none">STTAR</text>
+        </g>
+      </svg>
+    </div>
+    <h1>No one by that name here.</h1>
+    <p>This invite link doesn't match anyone on Sttar. Double-check the link, or get the app and find your friends there.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://app.sttar.com/">Get the app</a>
+      <a class="btn secondary" href="https://sttar.com/">Back to sttar.com</a>
+    </div>
+  </main>
+
+  <footer>Looking for someone? Ask them for their link or email <a href="mailto:hello@sttar.com">hello@sttar.com</a></footer>
+  <script>
+    try { var d=new Date(), m=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+          document.getElementById("stamp-date").textContent=("0"+d.getDate()).slice(-2)+" "+m[d.getMonth()]+" "+d.getFullYear(); } catch(e) {}
+  </script>
+</body>
+</html>
